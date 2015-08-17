@@ -2,20 +2,22 @@
 
 import RPi.GPIO as GPIO
 import time
+import requests
+import json
 
 LedPin = 11
-BtnPin = 12
 SenPin = 13
+
+ApiHeaders = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 
 def setup():
 	GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(LedPin, GPIO.OUT)
-	GPIO.setup(BtnPin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 	GPIO.setup(SenPin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 	GPIO.output(LedPin, GPIO.HIGH)
 
-# TO BE FINISHED!
+# TODO: TO BE FINISHED!
 def blinkLed():
 	while True:
 		GPIO.output(LedPin, GPIO.LOW)
@@ -23,21 +25,23 @@ def blinkLed():
 		GPIO.output(LedPin, GPIO.HIGH)
 		time.sleep(0.2)
 
+def update_state(was_closed, is_closed):
+	if !was_closed && is_closed:
+		print 'DOOR JUST CLOSED'
+		GPIO.output(LedPin, GPIO.LOW)
+
+	if was_closed && !is_closed:
+		print 'DOOR JUST OPENED'
+		GPIO.output(LedPin, GPIO.HIGH)
+
+	return is_closed
+
 def loop():
-	currentState = 0
+	was_closed = False
 
 	while True:
 		time.sleep(0.01)
-		if GPIO.input(SenPin) == GPIO.LOW:
-			if currentState == 0:
-				currentState = 1
-				print 'DOOR CLOSED'
-				GPIO.output(LedPin, GPIO.LOW)
-		else:
-			if currentState == 1:
-				currentState = 0
-				print 'DOOR OPEN'
-				GPIO.output(LedPin, GPIO.HIGH)
+		was_closed = update_state(was_closed, GPIO.input(SenPin) == GPIO.LOW)
 
 def destroy():
 	GPIO.output(LedPin, GPIO.HIGH)
