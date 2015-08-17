@@ -31,7 +31,7 @@ def update_toilet_state(is_closed):
 	update_params = { 'toilet': { 'state' : new_state } }
 	r = requests.patch('http://tds.shovik.com/toilets/1', json = update_params, headers = ApiHeaders)
 
-	print 'Updated to "' + new_state '". Status: ' + str(r.status_code) + ', Response: ' + r.content
+	print 'Updated to "' + new_state + '". Status: ' + str(r.status_code) + ', Response: ' + r.content
 
 def update_state(was_closed, is_closed):
 	if not was_closed and is_closed:
