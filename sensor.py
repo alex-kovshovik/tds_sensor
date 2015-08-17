@@ -26,11 +26,11 @@ def blinkLed():
 		time.sleep(0.2)
 
 def update_state(was_closed, is_closed):
-	if !was_closed && is_closed:
+	if not was_closed && is_closed:
 		print 'DOOR JUST CLOSED'
 		GPIO.output(LedPin, GPIO.LOW)
 
-	if was_closed && !is_closed:
+	if was_closed && not is_closed:
 		print 'DOOR JUST OPENED'
 		GPIO.output(LedPin, GPIO.HIGH)
 
