@@ -29,7 +29,7 @@ def update_toilet_state(is_closed):
 	new_state = 'occupied' if is_closed else 'available'
 
 	update_params = { 'toilet': { 'state' : new_state } }
-	r = requests.patch('http://tds.shovik.com/toilets/1', json = update_params, headers = ApiHeaders)
+	r = requests.patch('http://tds.shovik.com/toilets/1', data = json.dumps(update_params), headers = ApiHeaders)
 
 	print 'Updated to "' + new_state + '". Status: ' + str(r.status_code) + ', Response: ' + r.content
 
