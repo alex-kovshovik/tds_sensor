@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 import RPi.GPIO as GPIO
 import time
@@ -39,8 +40,9 @@ def update_toilet_state(is_closed):
 		print e
 
 def update_state(was_closed, is_closed):
+	# TODO: Remove - this is a temporary code to force daemon to run all the time.
 	update_toilet_state(is_closed)
-	
+
 	if not was_closed and is_closed:
 		GPIO.output(LedPin, GPIO.LOW)
 		update_toilet_state(is_closed)
@@ -55,7 +57,7 @@ def loop():
 	was_closed = False
 
 	while True:
-		time.sleep(1)
+		time.sleep(1) # Every second is frequent enough, IMHO.
 		was_closed = update_state(was_closed, GPIO.input(SenPin) == GPIO.LOW)
 
 def destroy():
