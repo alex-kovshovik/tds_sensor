@@ -5,6 +5,8 @@ import time
 import requests
 import json
 
+from requests.exceptions import ConnectionError
+
 LedPin = 11
 SenPin = 13
 
@@ -28,12 +30,17 @@ def blinkLed():
 def update_toilet_state(is_closed):
 	new_state = 'occupied' if is_closed else 'available'
 
-	update_params = { 'toilet': { 'state' : new_state } }
-	r = requests.patch('http://tds.shovik.com/toilets/1', data = json.dumps(update_params), headers = ApiHeaders)
+	try:
+		update_params = { 'toilet': { 'state' : new_state } }
+		r = requests.patch('http://tds.shovik.com/toilets/1', data = json.dumps(update_params), headers = ApiHeaders)
 
-	print 'Updated to "' + new_state + '". Status: ' + str(r.status_code)
+		print 'Updated to "' + new_state + '". Status: ' + str(r.status_code)
+	except ConnectionError as e:
+		print e
 
 def update_state(was_closed, is_closed):
+	update_toilet_state(is_closed)
+	
 	if not was_closed and is_closed:
 		GPIO.output(LedPin, GPIO.LOW)
 		update_toilet_state(is_closed)
@@ -48,7 +55,7 @@ def loop():
 	was_closed = False
 
 	while True:
-		time.sleep(0.1)
+		time.sleep(1)
 		was_closed = update_state(was_closed, GPIO.input(SenPin) == GPIO.LOW)
 
 def destroy():
