@@ -12,7 +12,7 @@
 
 # Change the next 3 lines to suit where you install your script and what you want to call it
 DIR=/usr/local/bin/tds_sensor
-DAEMON=$DIR/sensor.py
+DAEMON=$DIR/blink.py
 DAEMON_NAME=tds_sensor
 
 # Add any command line options for your daemon here
