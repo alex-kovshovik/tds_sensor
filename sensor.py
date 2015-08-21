@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
-import RPiMock.GPIO as GPIO
+import RPi.GPIO as GPIO
 import time
 import requests
 import json
